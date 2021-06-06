@@ -1,0 +1,34 @@
+{
+  "name": "Datafusion",
+  "id": "datafusion-datasource",
+  "type": "datasource",
+  "metrics": true,
+  "annotations": false,
+  "backend": true,
+  "executable": "gpx_datafusion",
+  "alerting": false,
+  "category": "other",
+  "info": {
+    "description": "",
+    "author": {
+      "name": "Grafana Labs",
+      "url": "https://grafana.com"
+    },
+    "keywords": ["arrow"],
+    "logos": {
+      "small": "img/datafusion.svg",
+      "large": "img/datafusion.svg"
+    },
+    "links": [],
+    "screenshots": [
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "7.x.x",
+    "grafanaDependency": ">=7.5.0",
+    "plugins": []
+  },
+  "includes": []
+}

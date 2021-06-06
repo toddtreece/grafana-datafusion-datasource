@@ -1,0 +1,25 @@
+[package]
+name = "grafana-plugin-sdk"
+version = "0.1.0"
+authors = ["Todd Treece <todd.treece@grafana.com>"]
+edition = "2018"
+
+[lib]
+path = "src/lib.rs"
+name = "grafana_plugin_sdk"
+
+[dependencies]
+futures = "0.3.15"
+arrow = "4.2.0"
+serde = { version = "1.0", features = ["derive"] }
+chrono = "0.4.19"
+datafusion = "4.0.0-SNAPSHOT"
+serde_json = "1.0.64"
+tonic = "0.4"
+prost = "0.7"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+async-trait = "0.1.50"
+anyhow = "1.0.40"
+
+[build-dependencies]
+tonic-build = "0.4"

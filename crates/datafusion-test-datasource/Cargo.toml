@@ -1,0 +1,21 @@
+[package]
+name = "datafusion-test-datasource"
+version = "0.1.0"
+authors = ["Todd Treece <todd.treece@grafana.com>"]
+edition = "2018"
+
+[dependencies]
+grafana-plugin-sdk =  {version= "0.1.0", path = "../grafana-plugin-sdk"}
+futures = "0.3.15"
+anyhow = "1.0.40"
+arrow = "4.2.0"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+chrono = "0.4.19"
+async-trait = "0.1.50"
+tokio = { version = "1.6.1", features = ["macros"] }
+octocrab = "0.9"
+
+[[bin]]
+path = "pkg/main.rs"
+name = "gpx_datafusion"
