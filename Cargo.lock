@@ -694,23 +694,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0e4075386626662786ddb0ec9081e7c7eeb1ba31951f447ca780ef9f5d568189"
 
 [[package]]
-name = "grafana-datafusion"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "arrow",
- "async-trait",
- "chrono",
- "datafusion-test-datasource",
- "futures",
- "grafana-plugin-sdk",
- "octocrab",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "grafana-plugin-sdk"
 version = "0.1.0"
 dependencies = [

@@ -1,10 +1,20 @@
-# Grafana Rust DataFusion Data Source
+# Grafana Rust Data Source
 
 This is the result of an experiment that uses [arrow-datafusion](https://github.com/apache/arrow-datafusion) as a datasource.
 
+You will need the following dependencies installed:
+* Docker
+* node v14
+* yarn
+
+To install the rest of the dependencies, you can run:
 ```
-make ui
-make dist/gpx_datafusion_linux_amd64
+make setup
+```
+
+Start grafana:
+```
+make start
 ```
 
 ## Example 
@@ -18,7 +28,7 @@ Example query:
 select
   * 
 from 
-    datasource.github.releases 
+  datasource.github.releases 
 where 
   repo = 'grafana' 
   and owner = 'grafana'

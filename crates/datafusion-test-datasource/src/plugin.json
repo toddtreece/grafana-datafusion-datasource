@@ -1,5 +1,5 @@
 {
-  "name": "Datafusion",
+  "name": "DataFusion",
   "id": "datafusion-datasource",
   "type": "datasource",
   "metrics": true,
@@ -20,8 +20,7 @@
       "large": "img/datafusion.svg"
     },
     "links": [],
-    "screenshots": [
-    ],
+    "screenshots": [],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },

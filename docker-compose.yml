@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/grafana:8.0.0-ubuntu
+    container_name: rust-datasource
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/datafusion-datasource/
+      - .config/grafana.ini:/etc/grafana/grafana.ini
+      - .config/datafusion.ini:/etc/grafana/provisioning/datasources/datafusion.ini
+    environment: 
+      - TERM=linux
+      - GF_DEFAULT_APP_MODE=development
+      - GF_LOG_LEVEL=debug
+      - GF_DATAPROXY_LOGGING=true
+      - RUST_BACKTRACE=full
