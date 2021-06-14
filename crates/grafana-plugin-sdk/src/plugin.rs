@@ -1,4 +1,5 @@
 mod data;
+mod diagnostic;
 
 use std::net::SocketAddr;
 use std::net::TcpListener;
@@ -15,14 +16,18 @@ use tokio::sync::Mutex;
 use tonic::transport::Server;
 
 use crate::proto::pluginv2::data_server::DataServer;
+use crate::proto::pluginv2::diagnostics_server::DiagnosticsServer;
 use crate::service::DataService;
+use crate::service::DiagnosticsService;
 
 pub use data::{DataProvider, Query};
+pub use diagnostic::{CheckHealthResponse, DiagnosticsProvider, HealthStatus};
 
 fn get_addr() -> Result<SocketAddr> {
   Ok(TcpListener::bind("127.0.0.1:0")?.local_addr()?)
 }
 
+#[derive(Clone)]
 pub struct Plugin {
   name: String,
   ctx: Arc<Mutex<ExecutionContext>>,
@@ -36,6 +41,18 @@ impl DataProvider for Plugin {
     let df = lock.sql(query.sql.as_str())?;
     let result: Vec<RecordBatch> = df.collect().await?;
     Ok(result)
+  }
+}
+
+// TODO: allow plugin to implement
+#[async_trait]
+impl DiagnosticsProvider for Plugin {
+  async fn check_health(&self) -> CheckHealthResponse {
+    CheckHealthResponse {
+      status: HealthStatus::Ok.into(),
+      message: "Ok".to_string(),
+      json_details: vec![],
+    }
   }
 }
 
@@ -80,7 +97,8 @@ pub async fn start(plugin: Plugin) -> Result<()> {
   println!("1|2|tcp|{}:{}|grpc", "localhost", addr.port());
 
   Server::builder()
-    .add_service(DataServer::new(DataService::new(plugin)))
+    .add_service(DataServer::new(DataService::new(plugin.clone())))
+    .add_service(DiagnosticsServer::new(DiagnosticsService::new(plugin)))
     .serve(addr)
     .await?;
 

@@ -1,0 +1,126 @@
+{
+	"annotations": {
+	  "list": [
+	    {
+	      "builtIn": 1,
+	      "datasource": "-- Grafana --",
+	      "enable": true,
+	      "hide": true,
+	      "iconColor": "rgba(0, 211, 255, 1)",
+	      "name": "Annotations & Alerts",
+	      "type": "dashboard"
+	    }
+	  ]
+	},
+	"editable": true,
+	"gnetId": null,
+	"graphTooltip": 0,
+	"id": 2,
+	"links": [],
+	"panels": [
+	  {
+	    "datasource": null,
+	    "fieldConfig": {
+	      "defaults": {
+		"color": {
+		  "mode": "palette-classic"
+		},
+		"custom": {
+		  "axisLabel": "",
+		  "axisPlacement": "auto",
+		  "barAlignment": 0,
+		  "drawStyle": "bars",
+		  "fillOpacity": 18,
+		  "gradientMode": "opacity",
+		  "hideFrom": {
+		    "legend": false,
+		    "tooltip": false,
+		    "viz": false
+		  },
+		  "lineInterpolation": "linear",
+		  "lineWidth": 1,
+		  "pointSize": 5,
+		  "scaleDistribution": {
+		    "type": "linear"
+		  },
+		  "showPoints": "auto",
+		  "spanNulls": false,
+		  "stacking": {
+		    "group": "A",
+		    "mode": "none"
+		  },
+		  "thresholdsStyle": {
+		    "mode": "off"
+		  }
+		},
+		"mappings": [],
+		"thresholds": {
+		  "mode": "absolute",
+		  "steps": [
+		    {
+		      "color": "green",
+		      "value": null
+		    },
+		    {
+		      "color": "red",
+		      "value": 80
+		    }
+		  ]
+		}
+	      },
+	      "overrides": []
+	    },
+	    "gridPos": {
+	      "h": 18,
+	      "w": 24,
+	      "x": 0,
+	      "y": 0
+	    },
+	    "id": 2,
+	    "options": {
+	      "legend": {
+		"calcs": [],
+		"displayMode": "list",
+		"placement": "bottom"
+	      },
+	      "tooltip": {
+		"mode": "single"
+	      }
+	    },
+	    "targets": [
+	      {
+		"refId": "A",
+		"sql": "SELECT \n  date_trunc('week', created_at) AS week,\n  count(*) AS opened_count\nFROM \n  datasource.github.pull_requests\nWHERE\n  owner = 'grafana'\n  AND repo = 'tempo'\nGROUP BY week \nORDER BY week ASC"
+	      },
+	      {
+		"hide": false,
+		"refId": "B",
+		"sql": "SELECT \n  date_trunc('week', merged_at) AS week,\n  count(*) AS merged_count\nFROM \n  datasource.github.pull_requests\nWHERE\n  owner = 'grafana'\n  AND repo = 'tempo'\nGROUP BY week \nORDER BY week ASC"
+	      },
+	      {
+		"hide": false,
+		"refId": "C",
+		"sql": "SELECT \n  date_trunc('week', published_at) AS week,\n  count(name) AS release_count\nFROM \n  datasource.github.releases\nWHERE\n  owner = 'grafana'\n  AND repo = 'tempo'\nGROUP BY week\nORDER BY week ASC"
+	      }
+	    ],
+	    "title": "grafana/tempo",
+	    "type": "timeseries"
+	  }
+	],
+	"refresh": "",
+	"schemaVersion": 30,
+	"style": "dark",
+	"tags": [],
+	"templating": {
+	  "list": []
+	},
+	"time": {
+	  "from": "now-90d",
+	  "to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "DataFusion Github Example",
+	"uid": "0qkTYHRnz",
+	"version": 3
+      }

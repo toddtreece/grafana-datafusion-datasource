@@ -52,7 +52,7 @@ where
   }
 
   fn output_partitioning(&self) -> Partitioning {
-    Partitioning::UnknownPartitioning(1)
+    Partitioning::RoundRobinBatch(1)
   }
 
   fn with_new_children(&self, _: Vec<Arc<dyn ExecutionPlan>>) -> Result<Arc<dyn ExecutionPlan>> {

@@ -4,6 +4,9 @@ PLUGIN_DIR := crates/datafusion-test-datasource
 ui:
 	cd ${PLUGIN_DIR} && yarn && yarn build
 	cp -R ${PLUGIN_DIR}/dist/* dist/
+	cp -R ${PLUGIN_DIR}/README.md dist/
+	cp -R ${PLUGIN_DIR}/LICENSE dist/
+	cp -R ${PLUGIN_DIR}/dashboards dist/dashboards
 
 dist/gpx_datafusion_linux_amd64: $(RS)
 	cargo build --target x86_64-unknown-linux-gnu

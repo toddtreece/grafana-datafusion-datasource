@@ -7,7 +7,6 @@
   "backend": true,
   "executable": "gpx_datafusion",
   "alerting": false,
-  "category": "other",
   "info": {
     "description": "",
     "author": {

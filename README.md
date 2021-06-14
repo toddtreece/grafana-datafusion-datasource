@@ -23,14 +23,31 @@ You can find an example of implementing a datasource [here](crates/datafusion-te
 
 ![screenshot](screenshot.png)
 
-Example query:
+Example `releases` query:
 ```sql
-select
-  * 
-from 
-  datasource.github.releases 
-where 
-  repo = 'grafana' 
-  and owner = 'grafana'
-  and tag_name like 'v8%';
+SELECT 
+  date_trunc('week', published_at) AS week,
+  count(name) AS release_count
+FROM 
+  datasource.github.releases
+WHERE
+  owner = 'grafana'
+  AND repo = 'tempo'
+GROUP BY week
+ORDER BY week ASC
+```
+
+Example `pull_requests` query:
+
+```sql
+SELECT 
+  date_trunc('week', created_at) AS week,
+  count(*) AS pr_count
+FROM 
+  datasource.github.pull_requests
+WHERE
+  owner = 'grafana'
+  AND repo = 'tempo'
+GROUP BY week 
+ORDER BY week ASC
 ```

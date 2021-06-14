@@ -5,7 +5,9 @@ use std::sync::Arc;
 use anyhow::Result;
 use arrow::datatypes::{DataType, Field, Schema, SchemaRef, TimeUnit};
 use async_trait::async_trait;
+use cached::proc_macro::cached;
 use grafana_plugin_sdk::DataSource;
+use octocrab::models::repos::Release as GitHubRelease;
 use serde::Serialize;
 
 #[derive(Serialize, Debug, Clone)]
@@ -23,6 +25,31 @@ pub struct Release {
   author: String,
 }
 
+#[cached(time = 600, result = true)]
+async fn cached_fetch(owner: String, repo: String) -> Result<Vec<GitHubRelease>> {
+  let octocrab = octocrab::instance();
+
+  let mut current_page = octocrab
+    .repos(owner, repo)
+    .releases()
+    .list()
+    .per_page(100)
+    .send()
+    .await?;
+
+  let mut releases = current_page.take_items();
+
+  while let Some(mut page) = octocrab
+    .get_page::<GitHubRelease>(&current_page.next)
+    .await?
+  {
+    releases.extend(page.take_items());
+    current_page = page;
+  }
+
+  Ok(releases)
+}
+
 #[derive(Debug, Clone)]
 pub struct ReleaseTable;
 
@@ -36,12 +63,12 @@ impl DataSource for ReleaseTable {
 
     let created_at = Field::new(
       "created_at",
-      DataType::Timestamp(TimeUnit::Second, None),
+      DataType::Timestamp(TimeUnit::Nanosecond, None),
       false,
     );
     let published_at = Field::new(
       "published_at",
-      DataType::Timestamp(TimeUnit::Second, None),
+      DataType::Timestamp(TimeUnit::Nanosecond, None),
       false,
     );
     let name = Field::new("name", DataType::Utf8, true);
@@ -76,23 +103,15 @@ impl DataSource for ReleaseTable {
   }
 
   async fn fetch_results(&self, options: HashMap<String, String>) -> Result<Self::Data> {
-    let octocrab = octocrab::instance();
-    let releases = octocrab
-      .repos(
-        options.get("owner").unwrap_or(&"".to_owned()),
-        options.get("repo").unwrap_or(&"".to_owned()),
-      )
-      .releases()
-      .list()
-      .send()
-      .await?;
+    let owner = options.get("owner").unwrap_or(&"".to_owned()).clone();
+    let repo = options.get("repo").unwrap_or(&"".to_owned()).clone();
+    let releases = cached_fetch(owner, repo).await?;
 
     let results: Vec<u8> = releases
-      .items
       .into_iter()
       .map(|r| Release {
-        created_at: r.created_at.timestamp(),
-        published_at: r.published_at.timestamp(),
+        created_at: r.created_at.timestamp() * 1000 * 1000 * 1000,
+        published_at: r.published_at.timestamp() * 1000 * 1000 * 1000,
         name: r.name,
         body: r.body,
         url: r.url.to_string(),

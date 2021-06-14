@@ -1,6 +1,6 @@
 services:
   grafana:
-    image: grafana/grafana:8.0.0-ubuntu
+    image: grafana/grafana:latest-ubuntu
     container_name: rust-datasource
     ports:
       - '3000:3000'
