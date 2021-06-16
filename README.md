@@ -1,4 +1,4 @@
-# Grafana Rust Data Source
+# Grafana Arrow-DataFusion Data Source
 
 This is the result of an experiment that uses [arrow-datafusion](https://github.com/apache/arrow-datafusion) as a datasource.
 
