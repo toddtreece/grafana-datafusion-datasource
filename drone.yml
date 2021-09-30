@@ -17,5 +17,6 @@ steps:
   - name: datafusion
     image: rust:1
     commands:
+      - env
       - rustup component add rustfmt
       - cargo build
