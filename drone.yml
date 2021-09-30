@@ -1,0 +1,21 @@
+kind: pipeline
+name: datasource
+type: docker
+trigger:
+  branch:
+    - master
+    - main
+  event:
+    - push
+    - pull_request
+
+platform:
+  arch: amd64
+  os: linux
+
+steps:
+  - name: datafusion
+    image: rust:1
+    commands:
+      - rustup component add rustfmt
+      - cargo build
